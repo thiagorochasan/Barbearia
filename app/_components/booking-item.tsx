@@ -4,29 +4,47 @@ import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Avatar } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { Card, CardContent } from "./ui/card";
+import { Booking, Prisma } from "@prisma/client";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale/pt-BR";
 
-const BookingItem = () => {
-    return (  
-        <Card className="min-w-full">
+interface BookingItemProps {
+    booking: Prisma.BookingGetPayload<{
+        include: {
+            service: true;
+            barbershop: true;
+        };
+    }>;
+}
 
-            <CardContent className="py-0 flex px-0">
-                <div className="flex flex-col gap-2 py-5 flex-[3] pl-5">
+const BookingItem = ({ booking }: BookingItemProps) => {
+
+
+
+    return (
+        <Card>
+
+            <CardContent className="p-5 flex py-0">
+                <div className="flex flex-col gap-2 py-5 flex-1">
                     <Badge className="bg-[#221C30] text-primary hover:bg-[#221C30] w-fit" >Confirmado</Badge>
 
-                    <h2 className="font-bold">Corte de cabelo</h2>
+                    <h2 className="font-bold"> {booking.service.name} </h2>
+
 
                     <div className="flex items-center gap-2">
                         <Avatar className="h-6 w-6">
-                            <AvatarImage src="https://utfs.io/f/0ddfbd26-a424-43a0-aaf3-c3f1dc6be6d1-1kgxo7.png" />
+                            <AvatarImage src={booking.barbershop.imageUrl} />
                             <AvatarFallback>A</AvatarFallback>
                         </Avatar>
 
-                        <h3 className="text-sm">Vintage Barber</h3>
+                        <h3 className="text-sm"> {booking.barbershop.name} </h3>
 
                         <div className="flex flex-col items-center justify-center flex-1 border-l border-solid border-secondary">
-                            <p className="text-sm capitalize">Fevereiro</p>
-                            <p className="text-2xl">06</p>
-                            <p className="text-sm">09:45</p>
+                            <p className="text-sm capitalize">{format(booking.date, "MMMM", {
+                                locale: ptBR
+                            })}</p>
+                            <p className="text-2xl"> { format( booking.date, "dd" ) } </p>
+                            <p className="text-sm"> { format( booking.date, "hh:mm" ) }    </p>
                         </div>
 
                     </div>
@@ -38,5 +56,5 @@ const BookingItem = () => {
 
     );
 }
- 
+
 export default BookingItem;
