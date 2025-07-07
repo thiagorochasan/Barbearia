@@ -11,7 +11,8 @@ import SideMenu from "./side-menu";
 
 
 const Header = () => {
-    return ( 
+  return (
+    <header>
       <Card>
         <CardContent className="p-5 justify-between items-center flex flex-row">
           <Link href="/">
@@ -19,23 +20,23 @@ const Header = () => {
           </Link>
 
 
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="outline" size="icon">
-              <MenuIcon size={16} />
-            </Button>
-          </SheetTrigger>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon">
+                <MenuIcon size={16} />
+              </Button>
+            </SheetTrigger>
 
             <SheetContent className="p-0">
               <SideMenu />
             </SheetContent>
-         </Sheet>
+          </Sheet>
 
-          
         </CardContent>
       </Card>
+    </header>
 
-     );
+  );
 }
- 
+
 export default Header;
