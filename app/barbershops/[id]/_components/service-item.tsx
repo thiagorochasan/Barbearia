@@ -180,7 +180,7 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
                       onSelect={handleDateClick}
                       className="rounded-md border"
                       locale={ptBR}
-                      fromDate={new Date()}
+                      disabled={{ before: new Date() }} 
                       styles={{
                         head_cell: {
                           width: "100%",
