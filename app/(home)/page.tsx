@@ -7,11 +7,33 @@ import { db } from "../_lib/prisma";
 import BarbershopItem from "./_components/barbershop-item";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../_lib/auth";
+import AdminHome from "../_components/admin-home";
 
 
 export default async function Home() {
 
     const session = await getServerSession(authOptions);
+
+    let isAdmin = false;
+
+
+    if (session?.user?.email) {
+        const user = await db.user.findUnique({
+            where: { email: session.user.email },
+        });
+
+        isAdmin = !!user?.isAdmin;
+    }
+
+    // Se for admin, renderiza a página do admin e não continua
+    if (isAdmin) {
+        return (
+            <div>
+                <Header />
+                <AdminHome />
+            </div>
+        );
+    }
 
     const [barbershops, recommendedBarbershops, confirmedBookings] = await Promise.all([
 
