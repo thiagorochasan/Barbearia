@@ -36,20 +36,16 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
   const [sheetIsOpen, setSheetIsOpen] = useState(false);
   const [dayBookings, setDayBookings] = useState<Booking[]>([]);
 
-  // console.log({dayBookings});
+  useEffect(() => {
+    if (sheetIsOpen && date) {
+      const refreshAvailableHours = async () => {
+        const _dayBookings = await getDayBookings(barbershop.id, date);
+        setDayBookings(_dayBookings);
+      };
 
- useEffect(() => {
-    if (!date) {
-      return;
+      refreshAvailableHours();
     }
-
-    const refreshAvailableHours = async () => {
-      const _dayBookings = await getDayBookings(barbershop.id, date);
-      setDayBookings(_dayBookings);
-    };
-
-    refreshAvailableHours();
-  }, [date, barbershop.id]);
+  }, [sheetIsOpen, date, barbershop.id]);
 
 
   const handleDateClick = (date: Date | undefined) => {
@@ -86,10 +82,14 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
 
       })
 
+      // Atualiza os horários disponíveis com a nova reserva feita
+      const _dayBookings = await getDayBookings(barbershop.id, newDate);
+      setDayBookings(_dayBookings);
+
       setSheetIsOpen(false);
       setHour(undefined);
-      setDate(undefined);
-      toast("Reserva realizada com sucesso!", {
+      //setDate(undefined);
+      toast.success("Reserva realizada com sucesso!", {
         description: format(newDate, "'Para' dd 'de' MMMM 'às' HH':'mm'.'", {
           locale: ptBR,
         }),
@@ -99,13 +99,13 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
         },
       })
 
+      console.log();
+
     } catch (error) {
       console.error(error);
     } finally {
       setSubmitIsLoading(false);
     }
-
-
 
   }
 
@@ -180,7 +180,7 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
                       onSelect={handleDateClick}
                       className="rounded-md border"
                       locale={ptBR}
-                      disabled={{ before: new Date() }} 
+                      disabled={{ before: new Date() }}
                       styles={{
                         head_cell: {
                           width: "100%",
@@ -269,21 +269,10 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
                       Confirmar reserva
                     </Button>
                   </SheetFooter>
-
-
                 </SheetContent>
-
               </Sheet>
-
-
             </div>
-
-
-
           </div>
-
-
-
         </div>
       </CardContent>
     </Card>

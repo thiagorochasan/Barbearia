@@ -77,7 +77,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
                                         locale: ptBR
                                     })}</p>
                                     <p className="text-2xl"> {format(booking.date, "dd")} </p>
-                                    <p className="text-sm"> {format(booking.date, "hh:mm")}    </p>
+                                    <p className="text-sm"> {format(booking.date, "HH:mm")}    </p>
                                 </div>
 
                             </div>
