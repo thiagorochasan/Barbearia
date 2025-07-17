@@ -168,12 +168,12 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
                   </Button>
                 </SheetTrigger>
 
-                <SheetContent className="p-0">
+                <SheetContent className="p-0 flex flex-col max-h-[90vh]">
                   <SheetHeader className="text-left px-5 py-6 border-b border-solid border-secondary">
                     <SheetTitle>Fazer Reserva</SheetTitle>
                   </SheetHeader>
 
-                  <div className="py-6">
+                  <div className="flex-grow overflow-y-auto py-6 px-5">
                     <Calendar
                       mode="single"
                       selected={date}
@@ -263,7 +263,7 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
                     </CardContent>
                   </Card>
 
-                  <SheetFooter className="px-5">
+                  <SheetFooter className="px-5 sticky bottom-0 bg-background border-t border-solid border-secondary z-10">
                     <Button onClick={handleBookingSubmit} disabled={!hour || !date || submitIsLoading}>
                       {submitIsLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                       Confirmar reserva
