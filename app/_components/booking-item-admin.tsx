@@ -53,7 +53,7 @@ const BookingItemAdmin = ({ booking }: BookingItemProps) => {
                 <Card className="min-w-full">
 
                     <CardContent className="py-0 flex px-0">
-                        <div className="flex flex-col gap-2 py-5 flex-[3] pl-5">
+                        <div className="flex flex-col gap-1 py-5 flex-[3] pl-5">
                             <Badge variant={isBookingConfirmed ? 'default' : 'secondary'} className="w-fit" >
 
                                 {isBookingConfirmed ? 'Confirmado' : 'Finalizado'}
@@ -75,7 +75,7 @@ const BookingItemAdmin = ({ booking }: BookingItemProps) => {
                                     <p className="text-sm capitalize">{format(booking.date, "MMMM", {
                                         locale: ptBR
                                     })}</p>
-                                    <p className="text-2xl"> {format(booking.date, "dd")} </p>
+                                    {/* <p className="text-2xl"> {format(booking.date, "dd")} </p> */}
                                     <p className="text-sm"> {format(booking.date, "HH:mm")}    </p>
                                 </div>
 
