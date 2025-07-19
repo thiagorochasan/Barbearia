@@ -236,22 +236,14 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
                         service: service,
                       }}
                     />
-                    
-                    <Button className="px-5" onClick={handleBookingSubmit} disabled={!hour || !date || submitIsLoading}>
-                      {submitIsLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                      Confirmar reserva
-                    </Button>
-
                   </div>
 
-
-
-                  {/* <SheetFooter className="px-5">
+                  <SheetFooter className="px-5 overflow-y-auto [&::-webkit-scrollbar]:hidden">
                     <Button onClick={handleBookingSubmit} disabled={!hour || !date || submitIsLoading}>
                       {submitIsLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                       Confirmar reserva
                     </Button>
-                  </SheetFooter> */}
+                  </SheetFooter>
                 </SheetContent>
               </Sheet>
             </div>
