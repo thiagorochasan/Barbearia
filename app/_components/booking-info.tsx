@@ -13,7 +13,7 @@ interface BookingInfoProps {
 const BookingInfo = ({ booking }: BookingInfoProps) => {
   return (
     <Card>
-      <CardContent className="p-3 gap-3 flex flex-col">
+      <CardContent className="p-3 gap-1 flex flex-col">
         <div className="flex justify-between">
           <h2 className="font-bold">{booking.service.name}</h2>
           <h3 className="font-bold text-sm">
