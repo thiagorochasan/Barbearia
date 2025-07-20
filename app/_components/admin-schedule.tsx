@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { format, startOfDay, endOfDay, setMinutes, setHours, isSameHour } from "date-fns";
+import { format, startOfDay, endOfDay, setMinutes, setHours, isSameHour, isEqual } from "date-fns";
 import { Calendar } from "./ui/calendar";
 import { ptBR } from "date-fns/locale/pt-BR";
 import WeekSelector from "./week-selector";
@@ -24,7 +24,14 @@ export default function AdminSchedule({ barbershopId }: { barbershopId: string }
     const [loading, setLoading] = useState(true);
     const [dayBookings, setDayBookings] = useState<Booking[]>([]);
 
-    const hours = Array.from({ length: 14 }, (_, i) => 8 + i) // 08h às 21h
+    // const hours = Array.from({ length: 14 }, (_, i) => 8 + i) // 08h às 21h
+
+    // console.log(hours);
+
+
+    const hours = Array.from({ length: 28 }, (_, i) => 8 + i * 0.5);
+
+    //console.log(hours2);
 
     useEffect(() => {
         const fetchBookings = async () => {
@@ -54,21 +61,27 @@ export default function AdminSchedule({ barbershopId }: { barbershopId: string }
             ) : (
                 <div className="space-y-3">
                     {hours.map((hour) => {
-                        const slot = setMinutes(setHours(selectedDate, hour), 0)
+                        const wholeHour = Math.floor(hour); // ex: 8
+                        const minutes = hour % 1 === 0.5 ? 30 : 0; // ex: 30 se for 8.5
+
+                        const slot = setMinutes(setHours(selectedDate, wholeHour), minutes);
+
+
                         const booking = dayBookings.find((b) =>
-                            isSameHour(new Date(b.date), slot)
-                        )
+                            isEqual(new Date(b.date), slot)
+                        );
 
                         return (
                             <div key={hour} className="flex items-start space-x-4">
-                                <div className="w-16 text-sm text-muted-foreground">{format(slot, "HH:mm")}</div>
+                                <div className="w-16 text-sm text-muted-foreground">
+                                    {format(slot, "HH:mm")}
+                                </div>
                                 {booking ? (
                                     <BookingItemAdmin booking={booking} />
                                 ) : (
                                     <Card className="min-w-full">
-
-                                        <CardContent className="p-3 text-sm italic text-muted-foreground">Horário livre
-
+                                        <CardContent className="p-3 text-sm italic text-muted-foreground">
+                                            Horário livre
                                         </CardContent>
                                     </Card>
                                 )}
