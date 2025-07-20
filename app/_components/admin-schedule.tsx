@@ -60,7 +60,19 @@ export default function AdminSchedule({ barbershopId }: { barbershopId: string }
                 <p className="mt-4">Nenhum agendamento encontrado.</p>
             ) : (
                 <div className="space-y-3">
-                    {hours.map((hour) => {
+
+                    {dayBookings.length > 0 && (
+                        <>
+                            {dayBookings.map((booking) => (
+                                <BookingItemAdmin key={booking.id} booking={booking} />
+                            ))}
+
+                        </>
+                    )}
+
+
+
+                    {/* {hours.map((hour) => {
                         const wholeHour = Math.floor(hour); // ex: 8
                         const minutes = hour % 1 === 0.5 ? 30 : 0; // ex: 30 se for 8.5
 
@@ -87,7 +99,7 @@ export default function AdminSchedule({ barbershopId }: { barbershopId: string }
                                 )}
                             </div>
                         )
-                    })}
+                    })} */}
                 </div>
             )}
         </div>
