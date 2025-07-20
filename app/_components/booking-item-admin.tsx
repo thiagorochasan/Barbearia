@@ -48,44 +48,24 @@ const BookingItemAdmin = ({ booking }: BookingItemProps) => {
 
         <Sheet>
             <SheetTrigger asChild>
-
-
                 <Card className="min-w-full">
-
                     <CardContent className="py-0 flex px-0">
                         <div className="flex flex-col gap-1 py-5 flex-[3] pl-5">
-                            <Badge variant={isBookingConfirmed ? 'default' : 'secondary'} className="w-fit" >
+                             <Badge variant={isBookingConfirmed ? 'default' : 'secondary'} className="w-fit" >
 
                                 {isBookingConfirmed ? 'Confirmado' : 'Finalizado'}
 
                             </Badge>
 
-                            <h2 className="font-bold"> {booking.service.name} </h2>
-
-
-                            <div className="flex items-center gap-2">
-                                <Avatar className="h-6 w-6">
-                                    <AvatarImage src={booking.user.image || undefined} />
-                                    <AvatarFallback>A</AvatarFallback>
-                                </Avatar>
-
-                                <h3 className="text-sm" translate="no"> {booking.user.name} </h3>
-
-                                <div className="flex flex-col items-center justify-center flex-1 border-l border-solid border-secondary">
-                                    <p className="text-sm capitalize">{format(booking.date, "MMMM", {
-                                        locale: ptBR
-                                    })}</p>
-                                    {/* <p className="text-2xl"> {format(booking.date, "dd")} </p> */}
-                                    <p className="text-sm"> {format(booking.date, "HH:mm")}    </p>
-                                </div>
-
-                            </div>
+                            <h3 className="text-sm" translate="no">
+                                <span className="font-medium text-gray-500">Cliente:</span> {booking.user.name}
+                            </h3>
+                            <p className="text-sm" translate="no">
+                                {booking.service.name} às {format(booking.date, "HH:mm")}
+                            </p>
                         </div>
                     </CardContent>
-
-
                 </Card>
-
             </SheetTrigger>
 
             <SheetContent className="px-0">
