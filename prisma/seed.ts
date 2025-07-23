@@ -29,7 +29,7 @@ async function seedDatabase() {
     ];
     // Nomes criativos para as barbearias
     const creativeNames = [
-      "Barbearia Vintage",
+      "Truefitt & Hill",
       "Corte & Estilo",
       "Barba & Navalha",
       "The Dapper Den",
@@ -80,18 +80,18 @@ async function seedDatabase() {
         price: 20.0,
         imageUrl: "https://utfs.io/f/2118f76e-89e4-43e6-87c9-8f157500c333-b0ps0b.png",
       },
-      {
-        name: "Massagem",
-        description: "Relaxe com uma massagem revigorante.",
-        price: 50.0,
-        imageUrl: "https://utfs.io/f/c4919193-a675-4c47-9f21-ebd86d1c8e6a-4oen2a.png",
-      },
-      {
-        name: "Hidratação",
-        description: "Hidratação profunda para cabelo e barba.",
-        price: 25.0,
-        imageUrl: "https://utfs.io/f/c4919193-a675-4c47-9f21-ebd86d1c8e6a-4oen2a.png",
-      },
+      // {
+      //   name: "Massagem",
+      //   description: "Relaxe com uma massagem revigorante.",
+      //   price: 50.0,
+      //   imageUrl: "https://utfs.io/f/c4919193-a675-4c47-9f21-ebd86d1c8e6a-4oen2a.png",
+      // },
+      // {
+      //   name: "Hidratação",
+      //   description: "Hidratação profunda para cabelo e barba.",
+      //   price: 25.0,
+      //   imageUrl: "https://utfs.io/f/c4919193-a675-4c47-9f21-ebd86d1c8e6a-4oen2a.png",
+      // },
     ];
 
     // Criar 10 barbearias com nomes e endereços fictícios

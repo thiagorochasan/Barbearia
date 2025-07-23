@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { getDayBookings } from "../_actions/get-day-bookings";
 import BookingInfo from "@/app/_components/booking-info";
+import { hasBookingAtTime } from "../_actions/has-booking-at-time";
 
 
 
@@ -37,6 +38,9 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
   const [sheetIsOpen, setSheetIsOpen] = useState(false);
   const [dayBookings, setDayBookings] = useState<Booking[]>([]);
 
+  
+  const isBarbershopDisabled = barbershop.id !== "dcc7b810-f9b8-42cc-a343-da0634343b8b";
+
   useEffect(() => {
     if (sheetIsOpen && date) {
       const refreshAvailableHours = async () => {
@@ -45,6 +49,7 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
       };
 
       refreshAvailableHours();
+
     }
   }, [sheetIsOpen, date, barbershop.id]);
 
@@ -69,11 +74,22 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
         return;
       }
 
-
       const dateHour = Number(hour.split(":")[0]);
       const dateMinutes = Number(hour.split(":")[1]);
 
       const newDate = setMinutes(setHours(date, dateHour), dateMinutes);
+
+      // Verifica se já existe agendamento no mesmo horário
+      const alreadyBooked = await hasBookingAtTime(barbershop.id, newDate);
+      if (alreadyBooked) {
+
+        const _dayBookings = await getDayBookings(barbershop.id, date);
+        setDayBookings(_dayBookings);
+
+        toast.error("Esse horário já foi reservado por outro cliente.");
+        return;
+      }
+
 
       await saveBooking({
         serviceId: service.id,
@@ -164,7 +180,7 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
 
               <Sheet open={sheetIsOpen} onOpenChange={setSheetIsOpen}>
                 <SheetTrigger asChild>
-                  <Button variant="secondary" onClick={handleBookingClick}>
+                  <Button variant="secondary" onClick={handleBookingClick} disabled={isBarbershopDisabled}>
                     Reservar
                   </Button>
                 </SheetTrigger>
