@@ -38,7 +38,6 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
   const [sheetIsOpen, setSheetIsOpen] = useState(false);
   const [dayBookings, setDayBookings] = useState<Booking[]>([]);
 
-  
   const isBarbershopDisabled = barbershop.id !== "dcc7b810-f9b8-42cc-a343-da0634343b8b";
 
   useEffect(() => {
@@ -105,7 +104,7 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
 
       setSheetIsOpen(false);
       setHour(undefined);
-      //setDate(undefined);
+      
       toast.success("Reserva realizada com sucesso!", {
         description: format(newDate, "'Para' dd 'de' MMMM 'às' HH':'mm'.'", {
           locale: ptBR,
