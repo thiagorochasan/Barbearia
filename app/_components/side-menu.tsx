@@ -40,10 +40,20 @@ const SideMenu = () => {
             <UserIcon size={32} />
             <h2 className="font-bold">Olá, faça seu login!</h2>
           </div>
+          {/* Login com Google */}
           <Button variant="secondary" className="w-full justify-start" onClick={handleLoginClick}>
             <LogInIcon className="mr-2" size={18} />
-            Fazer Login
+            Entrar com Google
           </Button>
+          
+          {/* Login Manual */}
+          <Button variant="outline" className="w-full justify-start" asChild>
+            <Link href="/login">
+              <LogInIcon className="mr-2" size={18} />
+              Entrar com E-mail
+            </Link>
+          </Button>
+
         </div>
       )}
 

@@ -13,13 +13,16 @@ interface BarberShopItemProps {
   barbershop: Barbershop;
 }
 
+
 const BarberShopItem = ({ barbershop }: BarberShopItemProps) => {
 
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
+  
 
   const handleBookingClick = () => {
+
     setIsLoading(true);
 
     router.push(`/barbershops/${barbershop.id}`);

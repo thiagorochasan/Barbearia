@@ -62,7 +62,11 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
   };
   const handleBookingClick = () => {
     if (!isAuthenticated) {
-      return signIn("google");
+
+      toast.error("Você deve estar logado!");
+
+      //return signIn("google");
+
     }
   };
 
@@ -186,10 +190,10 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
 
                 <SheetContent className="p-0 flex flex-col max-h-[90vh]">
                   <SheetHeader className="text-left px-5 py-6 border-b border-solid border-secondary">
-                    <SheetTitle>Fazer Reserva</SheetTitle>
+                    <SheetTitle className="mb-[-10px]" >Fazer Reserva</SheetTitle>
                   </SheetHeader>
 
-                  <div className="py-0">
+                  <div className="py-0 mt-[-8px] mb-[-8px]">
                     <Calendar
                       mode="single"
                       selected={date}
@@ -240,7 +244,7 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
                     </div>
                   )}
 
-                  <div className="py-1 px-5 border-t border-solid border-secondary overflow-y-auto [&::-webkit-scrollbar]:hidden">
+                  <div className="py-1 px-2 border-t border-solid border-secondary overflow-y-auto [&::-webkit-scrollbar]:hidden">
                     <BookingInfo
                       booking={{
                         barbershop: barbershop,
@@ -253,7 +257,7 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
                     />
                   </div>
 
-                  <SheetFooter className="px-5 overflow-y-auto [&::-webkit-scrollbar]:hidden">
+                  <SheetFooter className="px-4">
                     <Button onClick={handleBookingSubmit} disabled={!hour || !date || submitIsLoading}>
                       {submitIsLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                       Confirmar reserva
