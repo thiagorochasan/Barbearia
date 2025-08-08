@@ -7,26 +7,44 @@ import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { toast } from "sonner";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
 
-    const res = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    try {
+      setIsLoading(true);
+      e.preventDefault();
 
-    if (res?.ok) {
-      toast.success("Login realizado com sucesso!");
-      router.push("/");
-    } else {
-      toast.error("E-mail ou senha inválidos.");
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false, // evita redirecionamento automático
+        callbackUrl: "/", // para onde ir após login
+      });
+
+      if (res?.ok) {
+        toast.success("Login realizado com sucesso!");
+
+        setTimeout(() => {
+            router.push("/");
+          }, 2500); // 100ms costuma ser suficiente
+
+        
+      } else {
+        toast.error("E-mail ou senha inválidos.");
+      }
+
+    } catch (error) {
+      console.error(error);
+
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -49,7 +67,10 @@ export default function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <Button type="submit">Entrar</Button>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          Entrar
+        </Button>
       </form>
 
       <p className="text-sm mt-4 text-center">

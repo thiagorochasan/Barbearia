@@ -6,6 +6,7 @@ import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { toast } from "sonner";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
@@ -14,22 +15,35 @@ export default function RegisterPage() {
 
   const router = useRouter();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
 
-    const res = await fetch("/api/auth/register", {
-      method: "POST",
-      body: JSON.stringify({ name, email, password }),
-      headers: { "Content-Type": "application/json" },
-    });
+    try {
 
-    const data = await res.json();
+      setIsLoading(true);
+      e.preventDefault();
 
-    if (res.ok) {
-      toast.success("Usuário criado com sucesso!");
-      router.push("/login");
-    } else {
-      toast.error(data.error || "Erro ao cadastrar usuário.");
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        body: JSON.stringify({ name, email, password }),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        toast.success("Usuário criado com sucesso!");
+        router.push("/login");
+      } else {
+        toast.error(data.error || "Erro ao cadastrar usuário.");
+      }
+
+    } catch (error) {
+      console.error(error);
+
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -58,7 +72,10 @@ export default function RegisterPage() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <Button type="submit">Cadastrar</Button>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          Cadastrar
+        </Button>
       </form>
 
       <p className="text-sm mt-4 text-center">
