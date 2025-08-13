@@ -14,7 +14,7 @@ export default async function Home() {
 
     const session = await getServerSession(authOptions);
 
-    console.log("Session:", session);
+    //console.log("Session:", session);
 
     let isAdmin = false;
 

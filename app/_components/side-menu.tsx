@@ -6,11 +6,23 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { CalendarIcon, HomeIcon, LogInIcon, LogOutIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 const SideMenu = () => {
   const { data } = useSession();
 
-  const handleLogoutClick = () => signOut();
+  // const handleLogoutClick = () => signOut();
+
+  const handleLogoutClick = async () => {
+
+    toast.success("teste");
+    console.log(data);
+
+    await signOut({
+      redirect: true, // força redirecionamento
+      callbackUrl: "/login", // para onde vai depois
+    });
+  };
 
   const handleLoginClick = () => signIn("google");
 
@@ -45,7 +57,7 @@ const SideMenu = () => {
             <LogInIcon className="mr-2" size={18} />
             Entrar com Google
           </Button>
-          
+
           {/* Login Manual */}
           <Button variant="outline" className="w-full justify-start" asChild>
             <Link href="/login">
@@ -72,7 +84,16 @@ const SideMenu = () => {
               Agendamentos
             </Link>
           </Button>
+
+
         )}
+
+        <Button className="w-full" variant="secondary" onClick={handleLogoutClick} >
+          Sair
+        </Button>
+
+
+
       </div>
     </>
   );

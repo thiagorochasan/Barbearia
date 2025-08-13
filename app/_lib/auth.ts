@@ -10,7 +10,7 @@ export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(db) as Adapter,
 
   // garante que a sessão é controlada via JWT
- session: {
+  session: {
     strategy: "jwt",
   },
 
@@ -56,10 +56,18 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
+
+
+        const dbUser = await db.user.findUnique({
+          where: { id: user.id },
+        });
+
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
-        token.picture = user.image; // next-auth usa 'picture' para imagem
+        token.picture = user.image;
+        token.isAdmin = dbUser?.isAdmin ?? false;
+        token.barbershopId = dbUser?.barbershopId ?? null;
       }
       return token;
     },
@@ -72,7 +80,11 @@ export const authOptions: AuthOptions = {
           name: token.name as string,
           email: token.email as string,
           image: token.picture as string,
+          isAdmin: token.isAdmin as boolean,
+          barbershopId: token.barbershopId as string | null,
         };
+
+
       }
       return session;
     },

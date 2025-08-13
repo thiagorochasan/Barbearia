@@ -29,13 +29,31 @@ export default function LoginPage() {
       });
 
       if (res?.ok) {
+
+        console.log("Resultado login:", res);
+
         toast.success("Login realizado com sucesso!");
 
-        setTimeout(() => {
-            router.push("/");
-          }, 2500); // 100ms costuma ser suficiente
+        //  Obtém sessão após login
+        const session = await fetch("/api/auth/session").then(res => res.json());
 
-        
+        setTimeout(() => {
+
+          if (session?.user?.isAdmin) {
+            //router.push("/bookings-admin"); // página de admin
+
+            console.log(session.user.barbershopId);
+            
+            router.push("/admin");
+
+          } else {
+            router.push("/");
+          }
+
+
+        }, 1500); // 100ms costuma ser suficiente
+
+
       } else {
         toast.error("E-mail ou senha inválidos.");
       }
