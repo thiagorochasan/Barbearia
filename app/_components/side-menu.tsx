@@ -15,9 +15,6 @@ const SideMenu = () => {
 
   const handleLogoutClick = async () => {
 
-    toast.success("teste");
-    console.log(data);
-
     await signOut({
       redirect: true, // força redirecionamento
       callbackUrl: "/login", // para onde vai depois

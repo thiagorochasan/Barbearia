@@ -2,14 +2,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { format, startOfDay, endOfDay, setMinutes, setHours, isSameHour, isEqual } from "date-fns";
-import { Calendar } from "./ui/calendar";
+import { format } from "date-fns";
 import { ptBR } from "date-fns/locale/pt-BR";
 import WeekSelector from "./week-selector";
 import BookingItemAdmin from "./booking-item-admin";
 import { getDayBookings } from "../barbershops/[id]/_actions/get-day-bookings";
 import { Prisma } from "@prisma/client";
-import { Card, CardContent } from "./ui/card";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { CalendarClock, CalendarPlus, PlusIcon } from "lucide-react";
+import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+
 
 type Booking = Prisma.BookingGetPayload<{
     include: {
@@ -23,15 +28,23 @@ export default function AdminSchedule({ barbershopId }: { barbershopId: string }
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     const [loading, setLoading] = useState(true);
     const [dayBookings, setDayBookings] = useState<Booking[]>([]);
+    const router = useRouter();
 
     // const hours = Array.from({ length: 14 }, (_, i) => 8 + i) // 08h às 21h
 
-    // console.log(hours);
 
+    const handleBookingClick = () => {
+
+        //setIsLoading(true);
+        
+        router.push(`/barbershops/${barbershopId}`);
+
+        //console.log(barbershopId);
+    };
 
     const hours = Array.from({ length: 28 }, (_, i) => 8 + i * 0.5);
 
-    //console.log(hours2);
+
 
     useEffect(() => {
         const fetchBookings = async () => {
@@ -50,9 +63,32 @@ export default function AdminSchedule({ barbershopId }: { barbershopId: string }
 
             <WeekSelector selectedDate={selectedDate} onSelect={setSelectedDate} />
 
-            <p className="text-sm mt-4">
-                {format(selectedDate, "dd 'de' MMMM", { locale: ptBR })}
-            </p>
+            <div className="flex items-center justify-between mt-4 p-b-10">
+                <p className="text-sm mt-4">
+                    {format(selectedDate, "dd 'de' MMMM", { locale: ptBR })}
+                </p>
+
+
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+
+                        <Button size="sm" className="rounded-full shadow-md text-white p-2" variant={"aqua"}>
+                            <PlusIcon className="w-4 h-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={handleBookingClick} >
+                            <CalendarPlus className="mr-2 h-4 w-4" />
+                            Agendar novo horário
+                        </DropdownMenuItem >
+                        <DropdownMenuItem onClick={handleBookingClick}>
+                            <CalendarClock className="mr-2 h-4 w-4" />
+                            Reservar horário
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
+
 
             {loading ? (
                 <p className="mt-4">Carregando...</p>
@@ -102,6 +138,15 @@ export default function AdminSchedule({ barbershopId }: { barbershopId: string }
                     })} */}
                 </div>
             )}
+
+
+
         </div>
+
+
+
+
+
+
     );
 }
