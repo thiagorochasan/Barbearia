@@ -43,13 +43,14 @@ model Service {
 
 model Booking {
   id           String     @id @default(uuid())
-  userId       String
+  userId       String?
   serviceId    String
   barbershopId String
   date         DateTime
+  clientName   String?   // nome do cliente adicionado pelo admin
   barbershop   Barbershop @relation(fields: [barbershopId], references: [id])
   service      Service    @relation(fields: [serviceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  user         User       @relation(fields: [userId], references: [id])
+  user         User?       @relation(fields: [userId], references: [id])
 }
 
 model Account {

@@ -32,19 +32,12 @@ export default function AdminSchedule({ barbershopId }: { barbershopId: string }
 
     // const hours = Array.from({ length: 14 }, (_, i) => 8 + i) // 08h às 21h
 
-
     const handleBookingClick = () => {
 
-        //setIsLoading(true);
-        
         router.push(`/barbershops/${barbershopId}`);
-
-        //console.log(barbershopId);
     };
 
     const hours = Array.from({ length: 28 }, (_, i) => 8 + i * 0.5);
-
-
 
     useEffect(() => {
         const fetchBookings = async () => {
@@ -139,14 +132,6 @@ export default function AdminSchedule({ barbershopId }: { barbershopId: string }
                 </div>
             )}
 
-
-
         </div>
-
-
-
-
-
-
     );
 }

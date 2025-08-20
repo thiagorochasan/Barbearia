@@ -6,17 +6,19 @@ import { revalidatePath } from "next/cache";
 interface SaveBookingParams {
   barbershopId: string;
   serviceId: string;
-  userId: string;
+  userId?: string;
   date: Date;
+  clientName?: string;
 }
 
 export const saveBooking = async (params: SaveBookingParams) => {
   await db.booking.create({
     data: {
       serviceId: params.serviceId,
-      userId: params.userId,
+      userId: params.userId ?? null ,
       date: params.date,
       barbershopId: params.barbershopId,
+      clientName: params.clientName ?? null,
     },
   });
 

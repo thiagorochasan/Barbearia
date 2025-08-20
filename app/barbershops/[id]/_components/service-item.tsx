@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { getDayBookings } from "../_actions/get-day-bookings";
 import BookingInfo from "@/app/_components/booking-info";
 import { hasBookingAtTime } from "../_actions/has-booking-at-time";
+import { Input } from "@/app/_components/ui/input";
 
 
 
@@ -37,8 +38,9 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
   const [submitIsLoading, setSubmitIsLoading] = useState(false);
   const [sheetIsOpen, setSheetIsOpen] = useState(false);
   const [dayBookings, setDayBookings] = useState<Booking[]>([]);
+  const [clientName, setClientName] = useState("");
 
-  const isBarbershopDisabled = barbershop.id !== "dcc7b810-f9b8-42cc-a343-da0634343b8b";
+  const isBarbershopDisabled = barbershop.id !== "42509dea-d996-47b1-9e2f-ec3a176efe87";
 
   useEffect(() => {
     if (sheetIsOpen && date) {
@@ -98,8 +100,8 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
         serviceId: service.id,
         barbershopId: barbershop.id,
         date: newDate,
-        userId: (data.user as any).id,
-
+        userId: !(data.user as any).isAdmin ? (data.user as any).id : undefined,
+        clientName: (data.user as any).isAdmin ? clientName : undefined,
       })
 
       // Atualiza os horários disponíveis com a nova reserva feita
@@ -108,7 +110,7 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
 
       setSheetIsOpen(false);
       setHour(undefined);
-      
+
       toast.success("Reserva realizada com sucesso!", {
         description: format(newDate, "'Para' dd 'de' MMMM 'às' HH':'mm'.'", {
           locale: ptBR,
@@ -192,6 +194,17 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
                   <SheetHeader className="text-left px-5 py-6 border-b border-solid border-secondary">
                     <SheetTitle className="mb-[-10px]" >Fazer Reserva</SheetTitle>
                   </SheetHeader>
+
+                  {/* Se for admin, mostra campo nome do cliente */}
+                  {(data?.user as any)?.isAdmin && (
+                    <div className="px-4 py-2">
+                      <Input
+                        placeholder="Nome do cliente"
+                        value={clientName}
+                        onChange={(e) => setClientName(e.target.value)}
+                      />
+                    </div>
+                  )}
 
                   <div className="py-0 mt-[-8px] mb-[-8px]">
                     <Calendar

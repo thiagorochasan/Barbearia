@@ -51,14 +51,19 @@ const BookingItemAdmin = ({ booking }: BookingItemProps) => {
                 <Card className="min-w-full">
                     <CardContent className="py-0 flex px-0">
                         <div className="flex flex-col gap-1 py-2 flex-[3] pl-5">
-                             <Badge variant={isBookingConfirmed ? 'default' : 'secondary'} className="w-fit" >
+                            <Badge variant={isBookingConfirmed ? 'default' : 'secondary'} className="w-fit" >
 
                                 {isBookingConfirmed ? 'Confirmado' : 'Finalizado'}
 
                             </Badge>
 
                             <h3 className="text-sm" translate="no">
-                                <span className="font-medium text-gray-500">Cliente:</span> {booking.user.name}
+                                {/* <span className="font-medium text-gray-500">Cliente:</span> {booking.user.name} */}
+                                <span className="font-medium text-gray-500">Cliente:</span>{" "}
+                                {booking.user
+                                    ? booking.user.name
+                                    : booking.clientName ?? "Não informado"}
+
                             </h3>
                             <p className="text-sm" translate="no">
                                 {booking.service.name} às {format(booking.date, "HH:mm")}
@@ -82,12 +87,20 @@ const BookingItemAdmin = ({ booking }: BookingItemProps) => {
                             <Card>
                                 <CardContent className="p-3 flex gap-2">
                                     <Avatar>
-                                        <AvatarImage src={booking.user.image || undefined} />
+                                        {/* <AvatarImage src={booking.user?.image || "/default-avatar.png"} /> */}
+
+                                        <AvatarImage
+                                            src={booking.user?.image || undefined}
+                                            alt={booking.user?.name || booking.clientName || "Cliente"}
+                                        />
+                                        <AvatarFallback>
+                                            {(booking.user?.name || booking.clientName || "C")[0]}
+                                        </AvatarFallback>
                                     </Avatar>
 
                                     <div>
-                                        <h2 className="font-bold" translate="no">{booking.user.name}</h2>
-                                        <h3 className="text-xs overflow-hidden text-nowrap text-ellipsis">{booking.user.email}</h3>
+                                        <h2 className="font-bold" translate="no">{booking.user ? booking.user.name : booking.clientName ?? "Não informado"}</h2>
+                                        <h3 className="text-xs overflow-hidden text-nowrap text-ellipsis">{booking.user ? booking.user.email : ""}</h3>
                                     </div>
                                 </CardContent>
                             </Card>
@@ -131,7 +144,7 @@ const BookingItemAdmin = ({ booking }: BookingItemProps) => {
 
                             <div className="flex justify-between">
                                 <h3 className="text-gray-400 text-sm">Usuário</h3>
-                                <h4 className="text-sm">{booking.user.name}</h4>
+                                <h4 className="text-sm">{booking.user ? booking.user.name : booking.clientName ?? "Não informado"}</h4>
                             </div>
                         </CardContent>
                     </Card>
