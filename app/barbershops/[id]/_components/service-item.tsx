@@ -190,31 +190,13 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
                   </Button>
                 </SheetTrigger>
 
-                <SheetContent
-                  className={`p-0 flex flex-col ${(data?.user as any)?.isAdmin ? "max-h-[25vh]" : "max-h-[90vh]"
-                    }`}
-                >
-                  <SheetHeader className={`text-left border-b border-solid border-secondary
-                    ${(data?.user as any)?.isAdmin ? "px-4 py-3" : "px-5 py-6"}`}
-                  >
+                <SheetContent className="p-0 flex flex-col max-h-[90vh]">
+                  <SheetHeader className="text-left border-b border-solid border-secondary px-5 py-6">
                     <SheetTitle
-                      className={(data?.user as any)?.isAdmin ? "text-base" : "text-lg mb-[-10px]"}
-                    >
+                      className={(data?.user as any)?.isAdmin ? "text-base" : "text-lg mb-[-10px]"} >
                       Fazer Reserva
                     </SheetTitle>
                   </SheetHeader>
-
-                  {/* Se for admin, mostra campo nome do cliente */}
-                  {(data?.user as any)?.isAdmin && (
-                    <div className="px-4 py-1">
-                      <Input
-                        placeholder="Nome do cliente"
-                        value={clientName}
-                        onChange={(e) => setClientName(e.target.value)}
-                      />
-                    </div>
-                  )}
-
                   <div className="py-0 mt-[-8px] mb-[-8px]">
                     <Calendar
                       mode="single"
@@ -277,6 +259,18 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
                         service: service,
                       }}
                     />
+
+                  {/* Se for admin, mostra campo nome do cliente */}
+                    {(data?.user as any)?.isAdmin && (
+                      <div className="px-4 py-1">
+                        <Input
+                          placeholder="Nome do cliente"
+                          value={clientName}
+                          onChange={(e) => setClientName(e.target.value)}
+                        />
+                      </div>
+                    )}
+
                   </div>
 
                   <SheetFooter className="px-4">
