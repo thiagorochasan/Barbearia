@@ -185,84 +185,33 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
 
               <Sheet open={sheetIsOpen} onOpenChange={setSheetIsOpen}>
                 <SheetTrigger asChild>
-                  <Button variant="secondary" onClick={handleBookingClick} disabled={isBarbershopDisabled}>
+                  <Button
+                    variant="secondary"
+                    onClick={handleBookingClick}
+                    disabled={isBarbershopDisabled}
+                  >
                     Reservar
                   </Button>
                 </SheetTrigger>
 
                 <SheetContent className="p-0 flex flex-col max-h-[90vh]">
-                  <SheetHeader className="text-left border-b border-solid border-secondary px-5 py-6">
+                  {/* HEADER FIXO */}
+                  <SheetHeader
+                    className={`text-left border-b border-solid border-secondary ${(data?.user as any)?.isAdmin ? "px-4 py-3" : "px-5 py-6"
+                      }`}
+                  >
                     <SheetTitle
-                      className={(data?.user as any)?.isAdmin ? "text-base" : "text-lg mb-[-10px]"} >
+                      className={(data?.user as any)?.isAdmin ? "text-base" : "text-lg"}
+                    >
                       Fazer Reserva
                     </SheetTitle>
                   </SheetHeader>
-                  <div className="py-0 mt-[-8px] mb-[-8px]">
-                    <Calendar
-                      mode="single"
-                      selected={date}
-                      onSelect={handleDateClick}
-                      className="rounded-md border"
-                      locale={ptBR}
-                      disabled={{ before: new Date() }}
-                      styles={{
-                        head_cell: {
-                          width: "100%",
-                          textTransform: "capitalize",
-                        },
-                        cell: {
-                          width: "100%",
-                        },
-                        button: {
-                          width: "100%",
-                        },
-                        nav_button_previous: {
-                          width: "32px",
-                          height: "32px",
-                        },
-                        nav_button_next: {
-                          width: "32px",
-                          height: "32px",
-                        },
-                        caption: {
-                          textTransform: "capitalize",
-                        },
-                      }}
-                    />
-                  </div>
-                  {/* Mostrar lista de horários apenas se alguma data estiver selecionada */}
 
-                  {date && (
-                    <div className="flex gap-2 overflow-x-auto py-3 px-4 border-t border-solid border-secondary [&::-webkit-scrollbar]:hidden">
-                      {timeList.map((time) => (
-                        <Button
-                          onClick={() => handleHourClick(time)}
-                          variant={hour === time ? "default" : "outline"}
-                          className="rounded-full"
-                          key={time}
-                        >
-                          {time}
-                        </Button>
-                      ))}
-
-                    </div>
-                  )}
-
-                  <div className="py-1 px-2 border-t border-solid border-secondary overflow-y-auto [&::-webkit-scrollbar]:hidden">
-                    <BookingInfo
-                      booking={{
-                        barbershop: barbershop,
-                        date:
-                          date && hour
-                            ? setMinutes(setHours(date, Number(hour.split(":")[0])), Number(hour.split(":")[1]))
-                            : undefined,
-                        service: service,
-                      }}
-                    />
-
-                  {/* Se for admin, mostra campo nome do cliente */}
+                  {/* CONTEÚDO COM SCROLL ÚNICO */}
+                  <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden">
+                    {/* Se for admin, mostra campo nome do cliente */}
                     {(data?.user as any)?.isAdmin && (
-                      <div className="px-4 py-1">
+                      <div className="px-4 py-3 border-b border-secondary">
                         <Input
                           placeholder="Nome do cliente"
                           value={clientName}
@@ -271,16 +220,75 @@ const ServiceItem = ({ service, barbershop, isAuthenticated }: ServiceItemProps)
                       </div>
                     )}
 
+                    <div className="py-2">
+                      <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={handleDateClick}
+                        className="rounded-md border"
+                        locale={ptBR}
+                        disabled={{ before: new Date() }}
+                        styles={{
+                          head_cell: { width: "100%", textTransform: "capitalize" },
+                          cell: { width: "100%" },
+                          button: { width: "100%" },
+                          nav_button_previous: { width: "32px", height: "32px" },
+                          nav_button_next: { width: "32px", height: "32px" },
+                          caption: { textTransform: "capitalize" },
+                        }}
+                      />
+                    </div>
+
+                    {/* Lista de horários */}
+                    {date && (
+                      <div className="flex gap-2 overflow-x-auto py-3 px-4 border-t border-solid border-secondary [&::-webkit-scrollbar]:hidden">
+                        {timeList.map((time) => (
+                          <Button
+                            onClick={() => handleHourClick(time)}
+                            variant={hour === time ? "default" : "outline"}
+                            className="rounded-full"
+                            key={time}
+                          >
+                            {time}
+                          </Button>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Booking Info */}
+                    <div className="py-2 px-4 border-t border-solid border-secondary">
+                      <BookingInfo
+                        booking={{
+                          barbershop: barbershop,
+                          date:
+                            date && hour
+                              ? setMinutes(
+                                setHours(date, Number(hour.split(":")[0])),
+                                Number(hour.split(":")[1])
+                              )
+                              : undefined,
+                          service: service,
+                        }}
+                      />
+                    </div>
                   </div>
 
-                  <SheetFooter className="px-4">
-                    <Button onClick={handleBookingSubmit} disabled={!hour || !date || submitIsLoading}>
-                      {submitIsLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {/* FOOTER FIXO */}
+                  <SheetFooter className="px-4 border-t border-secondary pt-3">
+                    <Button
+                      onClick={handleBookingSubmit}
+                      disabled={!hour || !date || submitIsLoading}
+                    >
+                      {submitIsLoading && (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      )}
                       Confirmar reserva
                     </Button>
                   </SheetFooter>
                 </SheetContent>
               </Sheet>
+
+
             </div>
           </div>
         </div>
