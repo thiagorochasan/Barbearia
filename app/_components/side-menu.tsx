@@ -4,7 +4,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { SheetHeader, SheetTitle } from "./ui/sheet";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
-import { CalendarIcon, HomeIcon, LogInIcon, LogOutIcon, UserIcon } from "lucide-react";
+import { CalendarIcon, HomeIcon, LogInIcon, LogOutIcon, UserIcon, SearchIcon, PlusCircleIcon } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 
@@ -74,16 +74,42 @@ const SideMenu = () => {
           </Link>
         </Button>
 
-        {data?.user && (
+        {/* {data?.user && (
           <Button variant="outline" className="justify-start" asChild>
             <Link href="/bookings">
               <CalendarIcon size={18} className="mr-2" />
               Agendamentos
             </Link>
           </Button>
+        )} */}
 
+        {data?.user && (
+          <>
+            <Button variant="outline" className="justify-start" asChild>
+              <Link href="/bookings">
+                <CalendarIcon size={18} className="mr-2" />
+                Agendamentos
+              </Link>
+            </Button>
 
+            {/* Novo veículo */}
+            <Button variant="outline" className="justify-start" asChild>
+              <Link href="/vehicles/new">
+                <PlusCircleIcon size={18} className="mr-2" />
+                Novo Veículo
+              </Link>
+            </Button>
+
+            {/* Pesquisar veículo */}
+            <Button variant="outline" className="justify-start" asChild>
+              <Link href="/vehicles">
+                <SearchIcon size={18} className="mr-2" />
+                Pesquisar Veículos
+              </Link>
+            </Button>
+          </>
         )}
+
 
         <Button className="w-full" variant="secondary" onClick={handleLogoutClick} >
           Sair
